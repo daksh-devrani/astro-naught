@@ -1,0 +1,37 @@
+# Node
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.venv
+*.db
+*.sqlite
+*.sqlite3
+reports.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# LLM Context & Large Text Files
+*.md
+!README.md
+!frontend/README.md
+kp-readers/
+*.txt
+!backend/requirements.txt
