@@ -102,6 +102,62 @@ export default function CompatibilityDashboard({ report, personAInfo, personBInf
             </div>
           </div>
         </div>
+
+        {/* Ashtakoot 36 Gunas Scorecard */}
+        {report.ashtakoot && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-12 max-w-lg mx-auto bg-amber-950/20 border border-amber-500/30 rounded-3xl p-8 backdrop-blur-xl shadow-2xl"
+          >
+            <h3 className="text-lg font-bold text-amber-400 uppercase tracking-widest mb-6 flex justify-center items-center gap-2">
+              <span className="h-px bg-amber-500/30 flex-1"></span>
+              Vedic Ashtakoot Match
+              <span className="h-px bg-amber-500/30 flex-1"></span>
+            </h3>
+            
+            <div className="flex justify-center items-end gap-2 mb-8">
+              <span className="text-7xl font-black text-white">{report.ashtakoot.total_score}</span>
+              <span className="text-2xl text-amber-500/70 mb-2">/ 36 Gunas</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+              <div className="flex justify-between border-b border-slate-800 pb-1">
+                <span className="text-slate-400">Varna (Ego)</span>
+                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.varna}/1</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1">
+                <span className="text-slate-400">Vashya (Attraction)</span>
+                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.vashya}/2</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1">
+                <span className="text-slate-400">Tara (Health)</span>
+                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.tara}/3</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1">
+                <span className="text-slate-400">Yoni (Physical)</span>
+                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.yoni}/4</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1">
+                <span className="text-slate-400">Maitri (Mental)</span>
+                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.graha_maitri}/5</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1">
+                <span className="text-slate-400">Gana (Temperament)</span>
+                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.gana}/6</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1">
+                <span className="text-slate-400">Bhakoot (Harmony)</span>
+                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.bhakoot}/7</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-800 pb-1">
+                <span className="text-slate-400">Nadi (Genetic)</span>
+                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.nadi}/8</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
       </motion.div>
 
       {/* Metrics Breakdown */}

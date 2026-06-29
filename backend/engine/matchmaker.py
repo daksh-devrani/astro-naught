@@ -7,6 +7,9 @@ class MatchMaker:
     def __init__(self, chart_a: dict, chart_b: dict):
         self.chart_a = chart_a
         self.chart_b = chart_b
+        
+        from .ashtakoot import AshtakootCalculator
+        self.AshtakootCalculator = AshtakootCalculator
 
     def _get_angular_distance(self, deg1: float, deg2: float) -> float:
         """Returns the shortest angular distance between two degrees."""
@@ -231,8 +234,20 @@ class MatchMaker:
         all_strengths = list(set(all_strengths))
         all_challenges = list(set(all_challenges))
 
+        # Calculate Ashtakoot 36 Gunas
+        try:
+            moon_a_deg = self.chart_a.get("planets", {}).get("Moon", {}).get("absolute_degree", 0)
+            moon_b_deg = self.chart_b.get("planets", {}).get("Moon", {}).get("absolute_degree", 0)
+            sign_a = self.chart_a.get("planets", {}).get("Moon", {}).get("sign_number", 1)
+            sign_b = self.chart_b.get("planets", {}).get("Moon", {}).get("sign_number", 1)
+            
+            ashtakoot_result = self.AshtakootCalculator.calculate(moon_a_deg, moon_b_deg, sign_a, sign_b)
+        except Exception:
+            ashtakoot_result = {"total_score": 0, "max_score": 36, "breakdown": {}}
+
         return {
             "overall_score": round(overall_score),
+            "ashtakoot": ashtakoot_result,
             "categories": {
                 "emotional": emotional["score"],
                 "communication": communication["score"],

@@ -16,12 +16,8 @@ import Link from "next/link";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import LocationPicker from "@/components/ui/LocationPicker";
-import { useChartHistory, SavedChart } from "@/hooks/useChartHistory";
-import { User, Users } from "lucide-react";
 
 export default function Home() {
-  const [viewMode, setViewMode] = useState<"launchpad" | "individual">("launchpad");
-  const { history, saveChart, removeChart } = useChartHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [chartData, setChartData] = useState<any>(null);
   const [predictions, setPredictions] = useState<any>(null);
@@ -95,9 +91,6 @@ export default function Home() {
     setPredictions(null);
     setAiReading(null);
     setLastSubmittedFormData(formData);
-
-    // Save to history cache
-    saveChart(formData);
 
     try {
       // Instead of just the chart, we fetch the full prediction profile which CONTAINS the chart data implicitly via the rules engine, OR we fetch both.
@@ -239,87 +232,30 @@ export default function Home() {
           <p className="text-lg text-indigo-300/80 font-medium tracking-wide max-w-2xl mx-auto mb-8">
             Deterministic logic meets precise celestial mechanics.
           </p>
+          <div className="flex justify-center gap-4">
+            {primaryProfile && (
+              <Link 
+                href="/dashboard" 
+                className="px-6 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/20 hover:text-indigo-300 transition-all text-sm font-bold uppercase tracking-widest flex items-center gap-2"
+              >
+                Go to Dashboard
+              </Link>
+            )}
+            <Link 
+              href="/match" 
+              className="px-6 py-2 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 hover:bg-pink-500/20 hover:text-pink-300 transition-all text-sm font-bold uppercase tracking-widest flex items-center gap-2 shadow-[0_0_15px_rgba(236,72,153,0.2)]"
+            >
+              Try Kundli Matching (Synastry)
+            </Link>
+          </div>
         </motion.div>
 
         {/* Dynamic Content Area */}
-        <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto">
+        <div className="flex flex-col items-center justify-center">
 
           <AnimatePresence mode="wait">
-            {!chartData && !isLoading && viewMode === "launchpad" && (
-              <motion.div 
-                key="launchpad"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="w-full flex flex-col items-center gap-12"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
-                  <button
-                    onClick={() => setViewMode("individual")}
-                    className="p-8 rounded-3xl bg-indigo-950/40 border border-indigo-500/30 backdrop-blur-xl hover:bg-indigo-900/50 hover:border-indigo-400 hover:shadow-[0_0_40px_rgba(99,102,241,0.2)] transition-all flex flex-col items-center justify-center gap-4 group"
-                  >
-                    <div className="p-4 bg-indigo-500/20 rounded-full group-hover:scale-110 transition-transform">
-                      <User className="w-10 h-10 text-indigo-400" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-white tracking-wide">Individual Reading</h2>
-                    <p className="text-indigo-300/70 text-sm text-center">Generate comprehensive D1, D9, D12, and D60 charts with AI synthesis.</p>
-                  </button>
-
-                  <Link
-                    href="/match"
-                    className="p-8 rounded-3xl bg-pink-950/40 border border-pink-500/30 backdrop-blur-xl hover:bg-pink-900/50 hover:border-pink-400 hover:shadow-[0_0_40px_rgba(236,72,153,0.2)] transition-all flex flex-col items-center justify-center gap-4 group"
-                  >
-                    <div className="p-4 bg-pink-500/20 rounded-full group-hover:scale-110 transition-transform">
-                      <Users className="w-10 h-10 text-pink-400" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-white tracking-wide">Partner Matching</h2>
-                    <p className="text-pink-300/70 text-sm text-center">Calculate Synastry, Ashtakoot 36-Gunas, and deep planetary compatibility.</p>
-                  </Link>
-                </div>
-
-                {history.length > 0 && (
-                  <div className="w-full mt-8">
-                    <h3 className="text-lg font-mono text-indigo-300/60 uppercase tracking-widest mb-6 flex items-center gap-4">
-                      <span className="h-px bg-indigo-500/20 flex-1"></span>
-                      Recent Charts
-                      <span className="h-px bg-indigo-500/20 flex-1"></span>
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                      {history.map((chart) => (
-                        <div 
-                          key={chart.id}
-                          className="p-4 rounded-xl bg-slate-900/50 border border-slate-700/50 hover:border-indigo-500/50 cursor-pointer transition-colors relative group"
-                          onClick={() => {
-                            setViewMode("individual");
-                            fetchChart(chart);
-                          }}
-                        >
-                          <h4 className="text-white font-semibold truncate pr-6">{chart.name}</h4>
-                          <p className="text-xs text-slate-400 font-mono mt-1">{chart.date} • {chart.time}</p>
-                          <button 
-                            onClick={(e) => { e.stopPropagation(); removeChart(chart.id); }}
-                            className="absolute top-3 right-3 text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            )}
-
-            {!chartData && !isLoading && viewMode === "individual" && (
-              <motion.div key="form-container" className="w-full relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <button 
-                  onClick={() => setViewMode("launchpad")}
-                  className="absolute -top-12 left-0 flex items-center gap-2 text-indigo-400 hover:text-white transition-colors text-sm font-mono uppercase tracking-widest"
-                >
-                  <ChevronLeft className="w-4 h-4" /> Back to Home
-                </button>
-                <UserInputForm key="form" onSubmit={fetchChart} isLoading={isLoading} />
-              </motion.div>
+            {!chartData && !isLoading && (
+              <UserInputForm key="form" onSubmit={fetchChart} isLoading={isLoading} />
             )}
 
             {isLoading && (
