@@ -60,6 +60,19 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // We assume IST (-05:30) like the rest of the app for now, but handle proper timezone 
+    // conversion via standard Date object.
+    const getUtcTime = (year: number, month: number, day: number, hour: number, min: number) => {
+      const p_date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const p_time = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}:00`;
+      const localDate = new Date(`${p_date}T${p_time}-05:30`);
+      return { h: localDate.getUTCHours(), m: localDate.getUTCMinutes() };
+    };
+
+    const utc_a = getUtcTime(personA.year, personA.month, personA.day, personA.hour, personA.minute);
+    const utc_b = getUtcTime(personB.year, personB.month, personB.day, personB.hour, personB.minute);
+
     onSubmit({
       person_a: {
         name: personA.name || "Person A",
@@ -67,8 +80,8 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
         year: sanitizeNum(personA.year, 1990),
         month: sanitizeNum(personA.month, 1),
         day: sanitizeNum(personA.day, 1),
-        utc_hour: sanitizeNum(personA.hour, 12),
-        utc_minute: sanitizeNum(personA.minute, 0),
+        utc_hour: sanitizeNum(utc_a.h, 12),
+        utc_minute: sanitizeNum(utc_a.m, 0),
         latitude: sanitizeNum(personA.latitude, 28.6139),
         longitude: sanitizeNum(personA.longitude, 77.2090),
         ayanamsa_type: "kp",
@@ -80,8 +93,8 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
         year: sanitizeNum(personB.year, 1990),
         month: sanitizeNum(personB.month, 1),
         day: sanitizeNum(personB.day, 1),
-        utc_hour: sanitizeNum(personB.hour, 12),
-        utc_minute: sanitizeNum(personB.minute, 0),
+        utc_hour: sanitizeNum(utc_b.h, 12),
+        utc_minute: sanitizeNum(utc_b.m, 0),
         latitude: sanitizeNum(personB.latitude, 28.6139),
         longitude: sanitizeNum(personB.longitude, 77.2090),
         ayanamsa_type: "kp",
@@ -120,7 +133,7 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
         </div>
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">Hour (UTC)</label>
+            <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">Hour (Local)</label>
             <input type="number" min="0" max="23" value={person.hour} onChange={e => setPerson({...person, hour: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
           </div>
           <div>
