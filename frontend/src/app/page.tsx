@@ -656,15 +656,15 @@ export default function Home() {
             <button
               onClick={() => {
                 const profilePayload = {
-                  name: formData.name || "User",
-                  gender: formData.gender,
-                  year: formData.year,
-                  month: formData.month,
-                  day: formData.day,
-                  utc_hour: formData.hour,
-                  utc_minute: formData.minute,
-                  latitude: formData.latitude,
-                  longitude: formData.longitude,
+                  name: lastSubmittedFormData.name || "User",
+                  gender: lastSubmittedFormData.gender,
+                  year: lastSubmittedFormData.year,
+                  month: lastSubmittedFormData.month,
+                  day: lastSubmittedFormData.day,
+                  utc_hour: lastSubmittedFormData.hour,
+                  utc_minute: lastSubmittedFormData.minute,
+                  latitude: lastSubmittedFormData.latitude,
+                  longitude: lastSubmittedFormData.longitude,
                   ayanamsa_type: "kp",
                   preferred_system: "kp"
                 };
