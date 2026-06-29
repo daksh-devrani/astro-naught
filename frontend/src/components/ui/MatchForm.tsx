@@ -53,32 +53,37 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
     gender: "Female",
   });
 
+  const sanitizeNum = (val: any, fallback: number) => {
+    const num = Number(val);
+    return Number.isNaN(num) ? fallback : num;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({
       person_a: {
         name: personA.name || "Person A",
         gender: personA.gender,
-        year: personA.year,
-        month: personA.month,
-        day: personA.day,
-        utc_hour: personA.hour,
-        utc_minute: personA.minute,
-        latitude: personA.latitude,
-        longitude: personA.longitude,
+        year: sanitizeNum(personA.year, 1990),
+        month: sanitizeNum(personA.month, 1),
+        day: sanitizeNum(personA.day, 1),
+        utc_hour: sanitizeNum(personA.hour, 12),
+        utc_minute: sanitizeNum(personA.minute, 0),
+        latitude: sanitizeNum(personA.latitude, 28.6139),
+        longitude: sanitizeNum(personA.longitude, 77.2090),
         ayanamsa_type: "kp",
         preferred_system: "kp"
       },
       person_b: {
         name: personB.name || "Person B",
         gender: personB.gender,
-        year: personB.year,
-        month: personB.month,
-        day: personB.day,
-        utc_hour: personB.hour,
-        utc_minute: personB.minute,
-        latitude: personB.latitude,
-        longitude: personB.longitude,
+        year: sanitizeNum(personB.year, 1990),
+        month: sanitizeNum(personB.month, 1),
+        day: sanitizeNum(personB.day, 1),
+        utc_hour: sanitizeNum(personB.hour, 12),
+        utc_minute: sanitizeNum(personB.minute, 0),
+        latitude: sanitizeNum(personB.latitude, 28.6139),
+        longitude: sanitizeNum(personB.longitude, 77.2090),
         ayanamsa_type: "kp",
         preferred_system: "kp"
       }
