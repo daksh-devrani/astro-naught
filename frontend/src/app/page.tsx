@@ -658,13 +658,13 @@ export default function Home() {
                 const profilePayload = {
                   name: lastSubmittedFormData.name || "User",
                   gender: lastSubmittedFormData.gender,
-                  year: lastSubmittedFormData.year,
-                  month: lastSubmittedFormData.month,
-                  day: lastSubmittedFormData.day,
-                  utc_hour: lastSubmittedFormData.utc_hour,
-                  utc_minute: lastSubmittedFormData.utc_minute,
-                  latitude: lastSubmittedFormData.latitude,
-                  longitude: lastSubmittedFormData.longitude,
+                  year: parseInt(lastSubmittedFormData.year),
+                  month: parseInt(lastSubmittedFormData.month),
+                  day: parseInt(lastSubmittedFormData.day),
+                  utc_hour: parseFloat(lastSubmittedFormData.hour),
+                  utc_minute: parseFloat(lastSubmittedFormData.minute),
+                  latitude: parseFloat(lastSubmittedFormData.latitude),
+                  longitude: parseFloat(lastSubmittedFormData.longitude),
                   ayanamsa_type: "kp",
                   preferred_system: "kp"
                 };
