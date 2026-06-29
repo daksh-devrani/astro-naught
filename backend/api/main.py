@@ -215,7 +215,7 @@ Explanation:
             payload = {
                 "model": "llama-3.3-70b-versatile",
                 "messages": [
-                    {"role": "system", "content": "You are an expert Vedic astrologer. Keep your answers short, encouraging, and easy to understand."},
+                    {"role": "system", "content": "You are an expert Vedic astrologer acting as an AI Translator. Your job is to explain the raw astrological data provided to the user in a short, encouraging way. You MUST explicitly name the specific planets, houses, or signs that are causing this effect (e.g., 'Because Jupiter is transiting your 7th house...') so the user learns the actual astrology behind the prediction."},
                     {"role": "user", "content": prompt}
                 ],
                 "temperature": 0.7
