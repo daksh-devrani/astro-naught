@@ -188,7 +188,7 @@ def get_ai_explanation(data: ExplainRequest):
     Acts as a 'Translator' for the deterministic engine.
     Uses a cheap, fast Gemini call to explain a specific astrological finding.
     """
-    if not os.getenv("GEMINI_API_KEY"):
+    if not os.getenv("GEMINI_API_KEY") and not os.getenv("GROQ_API_KEY"):
         raise HTTPException(status_code=503, detail="AI Translator is currently offline. Missing API Key.")
         
     prompt = f"""
@@ -202,31 +202,61 @@ Context from the engine about '{data.topic}':
 Explanation:
 """
     try:
-        api_key = os.getenv("GEMINI_API_KEY")
+        groq_key = os.getenv("GROQ_API_KEY")
+        gemini_key = os.getenv("GEMINI_API_KEY")
+        
+        if groq_key:
+            # Use Groq API (Llama 3) - Ultra fast fallback
+            url = "https://api.groq.com/openai/v1/chat/completions"
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': f"Bearer {groq_key}"
+            }
+            payload = {
+                "model": "llama3-70b-8192",
+                "messages": [
+                    {"role": "system", "content": "You are an expert Vedic astrologer. Keep your answers short, encouraging, and easy to understand."},
+                    {"role": "user", "content": prompt}
+                ],
+                "temperature": 0.7
+            }
             
-        url = "https://generativelanguage.googleapis.com/v1beta/interactions"
-        headers = {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': api_key
-        }
-        payload = {
-            "model": "gemini-3.5-flash",
-            "input": prompt
-        }
-        
-        response = requests.post(url, headers=headers, json=payload)
-        
-        if response.status_code != 200:
-            return {"explanation": f"Gemini API Error ({response.status_code}): {response.text}"}
+            response = requests.post(url, headers=headers, json=payload)
+            if response.status_code != 200:
+                return {"explanation": f"Groq API Error ({response.status_code}): {response.text}"}
+                
+            data = response.json()
+            try:
+                text = data["choices"][0]["message"]["content"]
+                return {"explanation": text.strip()}
+            except (KeyError, IndexError):
+                return {"explanation": "Groq could not generate a response for this specific calculation."}
+                
+        elif gemini_key:
+            # Use Gemini API
+            url = "https://generativelanguage.googleapis.com/v1beta/interactions"
+            headers = {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': gemini_key
+            }
+            payload = {
+                "model": "gemini-3.5-flash",
+                "input": prompt
+            }
             
-        data = response.json()
-        
-        # Extract response from new Interactions API format
-        try:
-            text = data.get("output_text") or data["outputs"][0]["text"]
-            return {"explanation": text.strip()}
-        except (KeyError, IndexError, TypeError):
-            return {"explanation": "The AI Translator could not generate a response for this specific calculation."}
+            response = requests.post(url, headers=headers, json=payload)
+            
+            if response.status_code != 200:
+                return {"explanation": f"Gemini API Error ({response.status_code}): {response.text}"}
+                
+            data = response.json()
+            
+            # Extract response from new Interactions API format
+            try:
+                text = data.get("output_text") or data["outputs"][0]["text"]
+                return {"explanation": text.strip()}
+            except (KeyError, IndexError, TypeError):
+                return {"explanation": "The AI Translator could not generate a response for this specific calculation."}
             
     except Exception as e:
         import traceback
