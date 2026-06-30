@@ -386,8 +386,8 @@ export default function Home() {
 
                 {/* Flashcards Deck Section */}
                 <div className="relative w-full max-w-6xl mx-auto mb-20">
-                  {/* Side Navigation Buttons */}
-                  <div className="absolute top-1/2 -translate-y-1/2 left-0 z-[60] pointer-events-auto">
+                  {/* Side Navigation Buttons (Desktop) */}
+                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-0 z-[60] pointer-events-auto">
                     <button 
                       onClick={handlePrevVarga}
                       className="p-4 rounded-full bg-slate-800/80 border border-amber-500/20 text-amber-500 hover:bg-indigo-600 hover:text-white transition-all shadow-2xl backdrop-blur-md"
@@ -396,7 +396,7 @@ export default function Home() {
                     </button>
                   </div>
                   
-                  <div className="absolute top-1/2 -translate-y-1/2 right-0 z-[60] pointer-events-auto">
+                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 right-0 z-[60] pointer-events-auto">
                     <button 
                       onClick={handleNextVarga}
                       className="p-4 rounded-full bg-slate-800/80 border border-amber-500/20 text-amber-500 hover:bg-indigo-600 hover:text-white transition-all shadow-2xl backdrop-blur-md"
@@ -441,7 +441,17 @@ export default function Home() {
                               damping: 25,
                               mass: 1
                             }}
-                            className="absolute cursor-pointer will-change-transform"
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            onDragEnd={(e, { offset }) => {
+                              const swipe = offset.x;
+                              if (swipe < -50) {
+                                handleNextVarga();
+                              } else if (swipe > 50) {
+                                handlePrevVarga();
+                              }
+                            }}
+                            className="absolute cursor-grab active:cursor-grabbing will-change-transform"
                           >
                             <div className={`p-4 sm:p-8 rounded-2xl parchment ${isActive ? "magical-border ring-4 ring-indigo-500/20" : "border border-amber-900/10"} w-[300px] sm:w-[500px] flex flex-col items-center justify-center`}>
                               <div className="mb-4 text-center">
@@ -463,6 +473,22 @@ export default function Home() {
                         );
                       })}
                     </AnimatePresence>
+                  </div>
+                  
+                  {/* Mobile Navigation Buttons */}
+                  <div className="flex md:hidden justify-center gap-6 mt-8 relative z-[60]">
+                    <button 
+                      onClick={handlePrevVarga}
+                      className="p-4 rounded-full bg-slate-800/80 border border-amber-500/20 text-amber-500 hover:bg-indigo-600 hover:text-white transition-all shadow-xl backdrop-blur-md"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button 
+                      onClick={handleNextVarga}
+                      className="p-4 rounded-full bg-slate-800/80 border border-amber-500/20 text-amber-500 hover:bg-indigo-600 hover:text-white transition-all shadow-xl backdrop-blur-md"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
                   </div>
                 </div>
 

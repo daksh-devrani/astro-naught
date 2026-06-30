@@ -93,7 +93,10 @@ export default function NorthIndianChart({ houses, className, title }: NorthIndi
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 className="relative shadow-2xl shadow-indigo-500/10 rounded-sm overflow-hidden"
             >
-                <svg width={s} height={s} viewBox={`0 0 ${s} ${s}`} className="bg-slate-900/40 backdrop-blur-md">
+                <svg 
+                    viewBox={`0 0 ${s} ${s}`} 
+                    className="w-full h-auto aspect-square max-w-[400px] bg-slate-900/40 backdrop-blur-md"
+                >
                     {/* Draw Grid Lines */}
                     {lines.map((line, idx) => (
                         <line
