@@ -229,6 +229,49 @@ class AshtakootCalculator:
         nak_b_data, nak_b_idx = AshtakootCalculator.get_nakshatra(moon_b_deg)
         nak_g_data, nak_g_idx = AshtakootCalculator.get_nakshatra(moon_g_deg)
         
+        # Determine exact traits for transparency
+        def get_varna_name(s):
+            if s in [4, 8, 12]: return "Brahmin"
+            if s in [1, 5, 9]: return "Kshatriya"
+            if s in [2, 6, 10]: return "Vaishya"
+            return "Shudra"
+            
+        def get_vashya_name(s):
+            if s in [3, 6, 7, 11]: return "Manav"
+            if s in [1, 2, 9]: return "Chatushpad"
+            if s in [4, 10, 12]: return "Jalchar"
+            if s == 5: return "Vanachar"
+            if s == 8: return "Keet"
+            return "Manav"
+
+        yoni_names = ["Horse", "Elephant", "Sheep", "Snake", "Dog", "Cat", "Rat", "Cow", "Buffalo", "Tiger", "Deer", "Monkey", "Mongoose", "Lion"]
+        gana_names = ["Deva", "Manushya", "Rakshasa"]
+        nadi_names = ["Adi", "Madhya", "Antya"]
+        
+        from backend.rules.constants import SIGN_NAMES
+        
+        boy_traits = {
+            "varna": get_varna_name(sign_b),
+            "vashya": get_vashya_name(sign_b),
+            "yoni": yoni_names[nak_b_data["yoni"]],
+            "maitri_lord": AshtakootCalculator.SIGN_LORDS.get(sign_b, 'Sun'),
+            "gana": gana_names[nak_b_data["gana"]],
+            "sign": SIGN_NAMES[sign_b],
+            "nadi": nadi_names[nak_b_data["nadi"]],
+            "nakshatra": nak_b_data["name"]
+        }
+
+        girl_traits = {
+            "varna": get_varna_name(sign_g),
+            "vashya": get_vashya_name(sign_g),
+            "yoni": yoni_names[nak_g_data["yoni"]],
+            "maitri_lord": AshtakootCalculator.SIGN_LORDS.get(sign_g, 'Sun'),
+            "gana": gana_names[nak_g_data["gana"]],
+            "sign": SIGN_NAMES[sign_g],
+            "nadi": nadi_names[nak_g_data["nadi"]],
+            "nakshatra": nak_g_data["name"]
+        }
+
         res = {
             "varna": AshtakootCalculator.calculate_varna(sign_b, sign_g),
             "vashya": AshtakootCalculator.calculate_vashya(sign_b, sign_g),
@@ -249,6 +292,8 @@ class AshtakootCalculator:
             "total_score": total,
             "max_score": 36,
             "breakdown": res,
+            "boy_traits": boy_traits,
+            "girl_traits": girl_traits,
             "boy_nakshatra": nak_b_data["name"],
             "girl_nakshatra": nak_g_data["name"]
         }

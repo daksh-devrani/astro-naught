@@ -13,11 +13,8 @@ interface MatchFormProps {
 export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
   const [personA, setPersonA] = useState({
     name: "",
-    year: 1990,
-    month: 1,
-    day: 1,
-    hour: 12,
-    minute: 0,
+    date: "",
+    time: "",
     latitude: 28.6139,
     longitude: 77.2090,
     gender: "Male",
@@ -29,11 +26,8 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
     if (primaryProfile) {
       setPersonA({
         name: primaryProfile.name || "Me",
-        year: primaryProfile.year,
-        month: primaryProfile.month,
-        day: primaryProfile.day,
-        hour: primaryProfile.utc_hour,
-        minute: primaryProfile.utc_minute,
+        date: `${primaryProfile.year}-${String(primaryProfile.month).padStart(2, '0')}-${String(primaryProfile.day).padStart(2, '0')}`,
+        time: `${String(primaryProfile.utc_hour).padStart(2, '0')}:${String(primaryProfile.utc_minute).padStart(2, '0')}`,
         latitude: primaryProfile.latitude,
         longitude: primaryProfile.longitude,
         gender: primaryProfile.gender || "Male",
@@ -61,7 +55,10 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const getUtcDate = (year: number, month: number, day: number, hour: number, min: number) => {
+    const getUtcDate = (dateStr: string, timeStr: string) => {
+      if (!dateStr || !timeStr) return { y: 1990, mo: 1, d: 1, h: 12, m: 0 };
+      const [year, month, day] = dateStr.split('-').map(Number);
+      const [hour, min] = timeStr.split(':').map(Number);
       const d = new Date(Date.UTC(year, month - 1, day, hour, min));
       // IST is UTC + 5:30. To get UTC from IST, subtract 5.5 hours.
       d.setUTCHours(d.getUTCHours() - 5);
@@ -75,8 +72,8 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
       };
     };
 
-    const utc_a = getUtcDate(personA.year, personA.month, personA.day, personA.hour, personA.minute);
-    const utc_b = getUtcDate(personB.year, personB.month, personB.day, personB.hour, personB.minute);
+    const utc_a = getUtcDate(personA.date, personA.time);
+    const utc_b = getUtcDate(personB.date, personB.time);
 
     onSubmit({
       person_a: {
@@ -122,28 +119,14 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
           <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">Name</label>
           <input type="text" value={person.name} onChange={e => setPerson({...person, name: e.target.value})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" placeholder={`Enter ${title}'s Name`} required />
         </div>
-        <div className="grid grid-cols-3 gap-2">
-          <div>
-            <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">DD</label>
-            <input type="number" min="1" max="31" value={Number.isNaN(person.day) ? "" : person.day} onChange={e => setPerson({...person, day: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
-          </div>
-          <div>
-            <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">MM</label>
-            <input type="number" min="1" max="12" value={Number.isNaN(person.month) ? "" : person.month} onChange={e => setPerson({...person, month: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
-          </div>
-          <div>
-            <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">YYYY</label>
-            <input type="number" min="1900" max="2100" value={Number.isNaN(person.year) ? "" : person.year} onChange={e => setPerson({...person, year: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
-          </div>
-        </div>
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">Hour (Local)</label>
-            <input type="number" min="0" max="23" value={Number.isNaN(person.hour) ? "" : person.hour} onChange={e => setPerson({...person, hour: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
+            <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">Date</label>
+            <input type="date" value={person.date} onChange={e => setPerson({...person, date: e.target.value})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
           </div>
           <div>
-            <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">Minute</label>
-            <input type="number" min="0" max="59" value={Number.isNaN(person.minute) ? "" : person.minute} onChange={e => setPerson({...person, minute: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
+            <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">Time (Local)</label>
+            <input type="time" value={person.time} onChange={e => setPerson({...person, time: e.target.value})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
           </div>
         </div>
         

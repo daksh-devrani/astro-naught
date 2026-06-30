@@ -122,39 +122,30 @@ export default function CompatibilityDashboard({ report, personAInfo, personBInf
               <span className="text-2xl text-amber-500/70 mb-2">/ 36 Gunas</span>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-slate-400">Varna (Ego)</span>
-                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.varna}/1</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-slate-400">Vashya (Attraction)</span>
-                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.vashya}/2</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-slate-400">Tara (Health)</span>
-                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.tara}/3</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-slate-400">Yoni (Physical)</span>
-                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.yoni}/4</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-slate-400">Maitri (Mental)</span>
-                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.graha_maitri}/5</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-slate-400">Gana (Temperament)</span>
-                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.gana}/6</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-slate-400">Bhakoot (Harmony)</span>
-                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.bhakoot}/7</span>
-              </div>
-              <div className="flex justify-between border-b border-slate-800 pb-1">
-                <span className="text-slate-400">Nadi (Genetic)</span>
-                <span className="text-amber-300 font-mono">{report.ashtakoot.breakdown.nadi}/8</span>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+              {[
+                { label: "Varna (Ego)", key: "varna", max: 1, trait: "varna" },
+                { label: "Vashya (Attraction)", key: "vashya", max: 2, trait: "vashya" },
+                { label: "Tara (Health)", key: "tara", max: 3, trait: "nakshatra" },
+                { label: "Yoni (Physical)", key: "yoni", max: 4, trait: "yoni" },
+                { label: "Maitri (Mental)", key: "graha_maitri", max: 5, trait: "maitri_lord" },
+                { label: "Gana (Temperament)", key: "gana", max: 6, trait: "gana" },
+                { label: "Bhakoot (Harmony)", key: "bhakoot", max: 7, trait: "sign" },
+                { label: "Nadi (Genetic)", key: "nadi", max: 8, trait: "nadi" },
+              ].map((guna) => (
+                <div key={guna.key} className="flex flex-col border-b border-slate-800/80 pb-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300 font-medium">{guna.label}</span>
+                    <span className="text-amber-400 font-mono font-bold">{report.ashtakoot.breakdown[guna.key]}/{guna.max}</span>
+                  </div>
+                  {report.ashtakoot.boy_traits && report.ashtakoot.girl_traits && (
+                    <div className="flex justify-between text-[10px] text-slate-500 mt-1 uppercase tracking-wider">
+                      <span>P1: <span className="text-indigo-300/70">{report.ashtakoot.boy_traits[guna.trait]}</span></span>
+                      <span>P2: <span className="text-pink-300/70">{report.ashtakoot.girl_traits[guna.trait]}</span></span>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </motion.div>
         )}
