@@ -61,12 +61,12 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // We assume IST (-05:30) like the rest of the app for now, but handle proper timezone 
+    // We assume IST (+05:30) like the rest of the app for now, but handle proper timezone 
     // conversion via standard Date object.
     const getUtcTime = (year: number, month: number, day: number, hour: number, min: number) => {
       const p_date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const p_time = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}:00`;
-      const localDate = new Date(`${p_date}T${p_time}-05:30`);
+      const localDate = new Date(`${p_date}T${p_time}+05:30`);
       return { h: localDate.getUTCHours(), m: localDate.getUTCMinutes() };
     };
 
@@ -107,8 +107,8 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
     return <LoadingSpinner message="Calculating Synastry Alignment..." />;
   }
 
-  const renderPersonForm = (person: any, setPerson: any, title: string, color: string) => (
-    <div className={`p-4 sm:p-6 rounded-2xl bg-black/40 border ${color} backdrop-blur-sm shadow-xl flex-1`}>
+  const renderPersonForm = (person: any, setPerson: any, title: string, color: string, zIndexClass: string) => (
+    <div className={`p-4 sm:p-6 rounded-2xl bg-black/40 border ${color} backdrop-blur-sm shadow-xl flex-1 relative ${zIndexClass}`}>
       <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
         <Users className="w-5 h-5 text-indigo-400" /> {title}
       </h3>
@@ -170,8 +170,8 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
-        {renderPersonForm(personA, setPersonA, "Partner 1", "border-indigo-500/20 hover:border-indigo-500/50")}
-        {renderPersonForm(personB, setPersonB, "Partner 2", "border-pink-500/20 hover:border-pink-500/50")}
+        {renderPersonForm(personA, setPersonA, "Partner 1", "border-indigo-500/20 hover:border-indigo-500/50", "z-50")}
+        {renderPersonForm(personB, setPersonB, "Partner 2", "border-pink-500/20 hover:border-pink-500/50", "z-40")}
       </div>
 
       <div className="flex justify-center pt-8">

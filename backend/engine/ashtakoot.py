@@ -208,9 +208,21 @@ class AshtakootCalculator:
         return 7
         
     @staticmethod
-    def calculate_nadi(nadi_b: int, nadi_g: int):
-        if nadi_b == nadi_g: return 0
-        return 8
+    def calculate_nadi(nadi_b: int, nadi_g: int, nak_b_idx: int, nak_g_idx: int, sign_b: int, sign_g: int):
+        if nadi_b != nadi_g: 
+            return 8
+            
+        # Nadi is the same, so there is Nadi Dosh (0 points).
+        # Check for traditional cancellations:
+        if sign_b == sign_g and nak_b_idx != nak_g_idx:
+            # Same sign, different nakshatra -> Dosh cancelled
+            return 8
+            
+        if nak_b_idx == nak_g_idx and sign_b != sign_g:
+            # Same nakshatra, different sign (pada) -> Dosh cancelled
+            return 8
+            
+        return 0
 
     @staticmethod
     def calculate(moon_b_deg: float, moon_g_deg: float, sign_b: int, sign_g: int):
@@ -225,7 +237,11 @@ class AshtakootCalculator:
             "graha_maitri": AshtakootCalculator.calculate_graha_maitri(sign_b, sign_g),
             "gana": AshtakootCalculator.calculate_gana(nak_b_data["gana"], nak_g_data["gana"]),
             "bhakoot": AshtakootCalculator.calculate_bhakoot(sign_b, sign_g),
-            "nadi": AshtakootCalculator.calculate_nadi(nak_b_data["nadi"], nak_g_data["nadi"])
+            "nadi": AshtakootCalculator.calculate_nadi(
+                nak_b_data["nadi"], nak_g_data["nadi"],
+                nak_b_idx, nak_g_idx,
+                sign_b, sign_g
+            )
         }
         
         total = sum(res.values())
