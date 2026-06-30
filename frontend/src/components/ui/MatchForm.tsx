@@ -37,11 +37,8 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
 
   const [personB, setPersonB] = useState({
     name: "",
-    year: 1990,
-    month: 1,
-    day: 1,
-    hour: 12,
-    minute: 0,
+    date: "",
+    time: "",
     latitude: 28.6139,
     longitude: 77.2090,
     gender: "Female",
