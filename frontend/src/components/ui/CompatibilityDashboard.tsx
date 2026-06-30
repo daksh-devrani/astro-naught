@@ -60,7 +60,7 @@ export default function CompatibilityDashboard({ report, personAInfo, personBInf
   ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-12 mt-12 mb-20 pb-10">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-0 space-y-12 mt-12 mb-20 pb-10">
       
       {/* Header Profile Section */}
       <motion.div 
@@ -109,7 +109,7 @@ export default function CompatibilityDashboard({ report, personAInfo, personBInf
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mb-12 max-w-lg mx-auto bg-amber-950/20 border border-amber-500/30 rounded-3xl p-8 backdrop-blur-xl shadow-2xl"
+            className="mb-12 max-w-lg mx-auto bg-amber-950/20 border border-amber-500/30 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl"
           >
             <h3 className="text-lg font-bold text-amber-400 uppercase tracking-widest mb-6 flex justify-center items-center gap-2">
               <span className="h-px bg-amber-500/30 flex-1"></span>
@@ -164,7 +164,7 @@ export default function CompatibilityDashboard({ report, personAInfo, personBInf
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         {/* Progress Bars */}
-        <div className="p-8 rounded-3xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl shadow-2xl space-y-6">
+        <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl shadow-2xl space-y-6">
           <h3 className="text-lg font-bold text-white uppercase tracking-widest mb-6">Alignment Breakdown</h3>
           {categories.map((cat, idx) => (
             <motion.div 
@@ -199,7 +199,7 @@ export default function CompatibilityDashboard({ report, personAInfo, personBInf
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="p-8 rounded-3xl bg-indigo-950/20 border border-indigo-500/30 backdrop-blur-xl shadow-2xl"
+            className="p-6 sm:p-8 rounded-3xl bg-indigo-950/20 border border-indigo-500/30 backdrop-blur-xl shadow-2xl"
           >
             <h3 className="text-lg font-bold text-indigo-300 uppercase tracking-widest mb-4 flex items-center gap-2">
               Top Strengths
@@ -219,7 +219,7 @@ export default function CompatibilityDashboard({ report, personAInfo, personBInf
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="p-8 rounded-3xl bg-rose-950/20 border border-rose-500/30 backdrop-blur-xl shadow-2xl"
+            className="p-6 sm:p-8 rounded-3xl bg-rose-950/20 border border-rose-500/30 backdrop-blur-xl shadow-2xl"
           >
             <h3 className="text-lg font-bold text-rose-300 uppercase tracking-widest mb-4 flex items-center gap-2">
               Potential Friction

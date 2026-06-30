@@ -108,7 +108,7 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
   }
 
   const renderPersonForm = (person: any, setPerson: any, title: string, color: string) => (
-    <div className={`p-6 rounded-2xl bg-black/40 border ${color} backdrop-blur-sm shadow-xl flex-1`}>
+    <div className={`p-4 sm:p-6 rounded-2xl bg-black/40 border ${color} backdrop-blur-sm shadow-xl flex-1`}>
       <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
         <Users className="w-5 h-5 text-indigo-400" /> {title}
       </h3>
@@ -120,25 +120,25 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
         <div className="grid grid-cols-3 gap-2">
           <div>
             <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">DD</label>
-            <input type="number" min="1" max="31" value={person.day} onChange={e => setPerson({...person, day: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
+            <input type="number" min="1" max="31" value={Number.isNaN(person.day) ? "" : person.day} onChange={e => setPerson({...person, day: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
           </div>
           <div>
             <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">MM</label>
-            <input type="number" min="1" max="12" value={person.month} onChange={e => setPerson({...person, month: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
+            <input type="number" min="1" max="12" value={Number.isNaN(person.month) ? "" : person.month} onChange={e => setPerson({...person, month: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
           </div>
           <div>
             <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">YYYY</label>
-            <input type="number" min="1900" max="2100" value={person.year} onChange={e => setPerson({...person, year: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
+            <input type="number" min="1900" max="2100" value={Number.isNaN(person.year) ? "" : person.year} onChange={e => setPerson({...person, year: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">
           <div>
             <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">Hour (Local)</label>
-            <input type="number" min="0" max="23" value={person.hour} onChange={e => setPerson({...person, hour: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
+            <input type="number" min="0" max="23" value={Number.isNaN(person.hour) ? "" : person.hour} onChange={e => setPerson({...person, hour: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
           </div>
           <div>
             <label className="block text-xs uppercase tracking-widest text-slate-400 mb-1">Minute</label>
-            <input type="number" min="0" max="59" value={person.minute} onChange={e => setPerson({...person, minute: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
+            <input type="number" min="0" max="59" value={Number.isNaN(person.minute) ? "" : person.minute} onChange={e => setPerson({...person, minute: parseInt(e.target.value)})} className="w-full bg-slate-900/80 border border-slate-700 rounded-lg p-2 text-white focus:border-indigo-500 focus:outline-none" required />
           </div>
         </div>
         

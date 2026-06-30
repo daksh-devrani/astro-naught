@@ -72,7 +72,7 @@ export default function TimelineView({ timeline }: TimelineViewProps) {
 
       <div className="relative pl-4 md:pl-8">
         {/* The main vertical line */}
-        <div className="absolute top-0 bottom-0 left-[23px] md:left-[39px] w-1 bg-gradient-to-b from-indigo-900/50 via-purple-500/30 to-indigo-900/50 rounded-full" />
+        <div className="absolute top-0 bottom-0 left-[26px] md:left-[42px] w-1 bg-gradient-to-b from-indigo-900/50 via-purple-500/30 to-indigo-900/50 rounded-full" />
 
         {timeline.map((md, idx) => {
           const isCurrentMd = isCurrentPeriod(md.start, md.end);
@@ -98,7 +98,7 @@ export default function TimelineView({ timeline }: TimelineViewProps) {
               </div>
 
               {/* Mahadasha Card */}
-              <div className={`ml-12 md:ml-20 p-6 rounded-2xl border transition-all duration-300
+              <div className={`ml-14 md:ml-20 p-6 rounded-2xl border transition-all duration-300
                 ${isCurrentMd ? 'bg-indigo-900/20 border-indigo-500/50 shadow-lg' : 'bg-slate-900/40 border-slate-800 hover:border-slate-700'}`}
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
@@ -113,7 +113,7 @@ export default function TimelineView({ timeline }: TimelineViewProps) {
                     )}
                   </div>
                   <div className="text-sm font-mono text-slate-400 bg-black/30 px-3 py-1 rounded-lg">
-                    {md.start.split('-')[0]} — {md.end.split('-')[0]}
+                    {new Date(md.start).toLocaleDateString('en-GB', {day: '2-digit', month: '2-digit', year: 'numeric'})} — {new Date(md.end).toLocaleDateString('en-GB', {day: '2-digit', month: '2-digit', year: 'numeric'})}
                   </div>
                 </div>
 
@@ -144,7 +144,7 @@ export default function TimelineView({ timeline }: TimelineViewProps) {
                               {isCurrentAd && <div className="w-2 h-2 rounded-full bg-indigo-400 animate-ping" />}
                             </div>
                             <span className="text-[10px] text-slate-400 font-mono">
-                              {ad.start} to {ad.end}
+                              {new Date(ad.start).toLocaleDateString('en-GB', {day: '2-digit', month: '2-digit', year: 'numeric'})} to {new Date(ad.end).toLocaleDateString('en-GB', {day: '2-digit', month: '2-digit', year: 'numeric'})}
                             </span>
                           </div>
                         )

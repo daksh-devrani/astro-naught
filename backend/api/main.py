@@ -40,8 +40,10 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:3001",
-        "https://astro-naught.vercel.app"
+        "https://astro-naught.vercel.app",
+        "https://astro-naught-l6xx9s8fk-raju-chachas-projects.vercel.app"
     ],
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -113,7 +115,12 @@ def generate_chart(data: BirthData):
         # Attach personal data for the frontend to render the top-level chart context
         chart_data["personal_info"] = {
             "name": data.name,
-            "gender": data.gender
+            "gender": data.gender,
+            "year": data.year,
+            "month": data.month,
+            "day": data.day,
+            "hour": int(data.utc_hour),
+            "minute": int(data.utc_minute)
         }
         
         return chart_data
@@ -136,6 +143,16 @@ def generate_predictions(data: BirthData):
             data.ayanamsa_type
         )
         chart_data = astrology_engine.generate_chart(math_output, data.ayanamsa_type.upper())
+        
+        chart_data["personal_info"] = {
+            "name": data.name,
+            "gender": data.gender,
+            "year": data.year,
+            "month": data.month,
+            "day": data.day,
+            "hour": int(data.utc_hour),
+            "minute": int(data.utc_minute)
+        }
         
         compiler = PredictionCompiler(chart_data)
         profile = compiler.build_full_profile()
@@ -382,6 +399,17 @@ def generate_ai_insights(data: BirthData):
             data.ayanamsa_type
         )
         chart_data = astrology_engine.generate_chart(math_output, data.ayanamsa_type.upper())
+        
+        chart_data["personal_info"] = {
+            "name": data.name,
+            "gender": data.gender,
+            "year": data.year,
+            "month": data.month,
+            "day": data.day,
+            "hour": int(data.utc_hour),
+            "minute": int(data.utc_minute)
+        }
+        
         compiler = PredictionCompiler(chart_data)
         profile = compiler.build_full_profile()
         

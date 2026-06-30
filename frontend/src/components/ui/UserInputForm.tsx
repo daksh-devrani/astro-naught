@@ -141,7 +141,7 @@ export default function UserInputForm({ onSubmit, isLoading }: UserFormProps) {
         <motion.form
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-md p-8 rounded-xl bg-slate-900/50 backdrop-blur-xl border border-slate-800 shadow-2xl space-y-6"
+            className="w-full max-w-md p-6 sm:p-8 rounded-xl bg-slate-900/50 backdrop-blur-xl border border-slate-800 shadow-2xl space-y-6 mx-4 sm:mx-0"
             onSubmit={handleSubmit}
         >
             <div className="space-y-4">
@@ -170,7 +170,7 @@ export default function UserInputForm({ onSubmit, isLoading }: UserFormProps) {
                     </select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label className="block text-xs font-semibold text-indigo-300 uppercase tracking-widest mb-1 flex items-center gap-1"><Calendar className="w-3 h-3" /> Date</label>
                         <input

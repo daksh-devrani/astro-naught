@@ -233,7 +233,7 @@ export default function Home() {
               <Moon className="w-8 h-8 text-amber-300" />
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tight magical-text-gradient mb-4">
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight magical-text-gradient mb-4">
             ASTRO-NAUGHT
           </h1>
           <p className="text-lg text-indigo-300/80 font-medium tracking-wide max-w-2xl mx-auto mb-8">
@@ -368,7 +368,7 @@ export default function Home() {
 
                 {/* CHART SYSTEM TOGGLE */}
                 <div className="flex justify-center mb-12">
-                  <div className="bg-slate-800/50 p-1 rounded-xl flex border border-slate-700/50 shadow-inner">
+                  <div className="bg-slate-800/50 p-1 rounded-xl flex flex-col sm:flex-row gap-2 border border-slate-700/50 shadow-inner">
                     <button 
                       onClick={() => setChartSystem("kp")}
                       className={`px-6 py-2 rounded-lg text-sm tracking-wider font-bold transition-all ${chartSystem === "kp" ? "bg-indigo-600 text-white shadow-lg" : "text-slate-400 hover:text-slate-200"}`}
@@ -443,7 +443,7 @@ export default function Home() {
                             }}
                             className="absolute cursor-pointer will-change-transform"
                           >
-                            <div className={`p-8 rounded-2xl parchment ${isActive ? "magical-border ring-4 ring-indigo-500/20" : "border border-amber-900/10"} w-[320px] sm:w-[500px] flex flex-col items-center justify-center`}>
+                            <div className={`p-4 sm:p-8 rounded-2xl parchment ${isActive ? "magical-border ring-4 ring-indigo-500/20" : "border border-amber-900/10"} w-[300px] sm:w-[500px] flex flex-col items-center justify-center`}>
                               <div className="mb-4 text-center">
                                 <h3 className={`text-2xl font-bold ${isActive ? 'magical-text-gradient' : 'text-amber-900/80'}`}>{v.name}</h3>
                                 <p className="text-[10px] text-amber-900/60 uppercase tracking-widest font-black">{v.sub}</p>
@@ -497,7 +497,7 @@ export default function Home() {
                               <h3 className="text-2xl font-semibold text-indigo-200 tracking-wider flex items-center gap-2">
                                 🌙 Moon Profile — Nakshatra Attributes
                               </h3>
-                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                                 <div className="p-3 rounded-lg bg-slate-800/50 text-center">
                                   <p className="text-xs text-slate-400 uppercase tracking-widest">Nakshatra</p>
                                   <p className="text-lg font-bold text-amber-300 mt-1">{predictions.moon_profile.nakshatra}</p>
