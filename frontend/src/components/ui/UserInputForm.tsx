@@ -109,14 +109,16 @@ export default function UserInputForm({ onSubmit, isLoading }: UserFormProps) {
             return;
         }
 
-        // Convert the input into a standard UTC Date object assuming the input is IST (+05:30)
-        // Creating ISO string to parse local Indian time:
-        const istOffsetString = "+05:30";
-        const combinedDateTime = `${formData.date}T${formData.time}:00${istOffsetString}`;
+        // Parse input safely using Date.UTC
+        const [year, month, day] = formData.date.split('-').map(Number);
+        const [hour, min] = formData.time.split(':').map(Number);
+        
+        const d = new Date(Date.UTC(year, month - 1, day, hour, min));
+        // IST is UTC + 5:30. To get UTC from IST, subtract 5.5 hours.
+        d.setUTCHours(d.getUTCHours() - 5);
+        d.setUTCMinutes(d.getUTCMinutes() - 30);
 
-        const utcDate = new Date(combinedDateTime);
-
-        if (isNaN(utcDate.getTime())) {
+        if (isNaN(d.getTime())) {
             setLocationError("Invalid date or time provided.");
             return;
         }
@@ -124,11 +126,11 @@ export default function UserInputForm({ onSubmit, isLoading }: UserFormProps) {
         const payload = {
             name: formData.name || "Seeker",
             gender: formData.gender,
-            year: utcDate.getUTCFullYear(),
-            month: utcDate.getUTCMonth() + 1, // 0-indexed month
-            day: utcDate.getUTCDate(),
-            utc_hour: utcDate.getUTCHours(),
-            utc_minute: utcDate.getUTCMinutes(),
+            year: d.getUTCFullYear(),
+            month: d.getUTCMonth() + 1, // 0-indexed month
+            day: d.getUTCDate(),
+            utc_hour: d.getUTCHours(),
+            utc_minute: d.getUTCMinutes(),
             latitude: parseFloat(formData.latitude),
             longitude: parseFloat(formData.longitude),
             ayanamsa_type: formData.ayanamsa_type.toLowerCase()

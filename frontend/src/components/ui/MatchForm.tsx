@@ -61,25 +61,30 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // We assume IST (+05:30) like the rest of the app for now, but handle proper timezone 
-    // conversion via standard Date object.
-    const getUtcTime = (year: number, month: number, day: number, hour: number, min: number) => {
-      const p_date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      const p_time = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}:00`;
-      const localDate = new Date(`${p_date}T${p_time}+05:30`);
-      return { h: localDate.getUTCHours(), m: localDate.getUTCMinutes() };
+    const getUtcDate = (year: number, month: number, day: number, hour: number, min: number) => {
+      const d = new Date(Date.UTC(year, month - 1, day, hour, min));
+      // IST is UTC + 5:30. To get UTC from IST, subtract 5.5 hours.
+      d.setUTCHours(d.getUTCHours() - 5);
+      d.setUTCMinutes(d.getUTCMinutes() - 30);
+      return { 
+        y: d.getUTCFullYear(), 
+        mo: d.getUTCMonth() + 1, 
+        d: d.getUTCDate(), 
+        h: d.getUTCHours(), 
+        m: d.getUTCMinutes() 
+      };
     };
 
-    const utc_a = getUtcTime(personA.year, personA.month, personA.day, personA.hour, personA.minute);
-    const utc_b = getUtcTime(personB.year, personB.month, personB.day, personB.hour, personB.minute);
+    const utc_a = getUtcDate(personA.year, personA.month, personA.day, personA.hour, personA.minute);
+    const utc_b = getUtcDate(personB.year, personB.month, personB.day, personB.hour, personB.minute);
 
     onSubmit({
       person_a: {
         name: personA.name || "Person A",
         gender: personA.gender,
-        year: sanitizeNum(personA.year, 1990),
-        month: sanitizeNum(personA.month, 1),
-        day: sanitizeNum(personA.day, 1),
+        year: sanitizeNum(utc_a.y, 1990),
+        month: sanitizeNum(utc_a.mo, 1),
+        day: sanitizeNum(utc_a.d, 1),
         utc_hour: sanitizeNum(utc_a.h, 12),
         utc_minute: sanitizeNum(utc_a.m, 0),
         latitude: sanitizeNum(personA.latitude, 28.6139),
@@ -90,9 +95,9 @@ export default function MatchForm({ onSubmit, isLoading }: MatchFormProps) {
       person_b: {
         name: personB.name || "Person B",
         gender: personB.gender,
-        year: sanitizeNum(personB.year, 1990),
-        month: sanitizeNum(personB.month, 1),
-        day: sanitizeNum(personB.day, 1),
+        year: sanitizeNum(utc_b.y, 1990),
+        month: sanitizeNum(utc_b.mo, 1),
+        day: sanitizeNum(utc_b.d, 1),
         utc_hour: sanitizeNum(utc_b.h, 12),
         utc_minute: sanitizeNum(utc_b.m, 0),
         latitude: sanitizeNum(personB.latitude, 28.6139),
